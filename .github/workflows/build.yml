@@ -17,13 +17,17 @@ jobs:
           repository: kaya-berk/ExcelParser
           fetch-depth: 0
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y cmake g++ make qtbase5-dev qttools5-dev-tools
+      - name: Install Qt 5.15.2
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          modules: 'qtbase'   # QtCore + QtGui dahil
+
+      - name: Install CMake & tools
+        run: sudo apt-get update && sudo apt-get install -y cmake g++ make ninja-build
 
       - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu/cmake
+        run: cmake -S . -B build -G Ninja -DCMAKE_PREFIX_PATH=$Qt5_DIR
 
       - name: Build
         run: cmake --build build --config Release
