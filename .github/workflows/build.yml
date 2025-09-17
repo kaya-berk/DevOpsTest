@@ -21,7 +21,9 @@ jobs:
         uses: jurplel/install-qt-action@v3
         with:
           version: '5.15.2'
-          modules: 'qtbase'   # QtCore + QtGui dahil
+          host: 'linux'
+          target: 'desktop'
+          arch: 'gcc_64'
 
       - name: Install CMake & tools
         run: sudo apt-get update && sudo apt-get install -y cmake g++ make ninja-build
