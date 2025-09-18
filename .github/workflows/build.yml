@@ -2,6 +2,8 @@ name: CMake Build & Test
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -37,7 +39,27 @@ jobs:
         working-directory: build
         run: ctest --output-on-failure
 
+  git-leaks:
+    runs-on: ubuntu-latest
+    steps:
       - name: Secret Scan (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         with:
           args: detect --source . --congfig .gitleaks.toml --verbose
+          
+  sca-dependency-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: "ExcelParser"
+          path: "."
+          format: "HTML"
+          out: "reports"
+
+      - name: Upload Dependency-Check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports/
