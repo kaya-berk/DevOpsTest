@@ -10,9 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout ExcelParser code
         uses: actions/checkout@v4
         with:
           repository: kaya-berk/ExcelParser
@@ -43,15 +42,27 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Checkout ExcelParser code
+        uses: actions/checkout@v4
+        with:
+          repository: kaya-berk/ExcelParser
+          fetch-depth: 0
+
       - name: Secret Scan (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         with:
-          args: detect --source . --congfig .gitleaks.toml --verbose
-          
+          config: .gitleaks.toml
+
   sca-dependency-check:
     runs-on: ubuntu-latest
     needs: git-leaks
     steps:
+      - name: Checkout ExcelParser code
+        uses: actions/checkout@v4
+        with:
+          repository: kaya-berk/ExcelParser
+          fetch-depth: 0
+
       - name: Run OWASP Dependency-Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
