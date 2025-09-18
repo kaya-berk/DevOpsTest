@@ -46,7 +46,7 @@ jobs:
       - name: Secret Scan (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         with:
-          args: detect --source . --congfig .gitleaks.toml --verbose
+          args: detect --source . --congfig --verbose
           
   sca-dependency-check:
     runs-on: ubuntu-latest
