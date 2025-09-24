@@ -76,3 +76,29 @@ jobs:
         with:
           name: dependency-check-report
           path: reports/
+
+  codeql-analysis:
+    name: Analyze with CodeQL
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout ExcelParser code
+        uses: actions/checkout@v4
+        with:
+          repository: kaya-berk/ExcelParser
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: cpp
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
