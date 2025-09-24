@@ -80,7 +80,7 @@ jobs:
   codeql-analysis:
     name: Analyze with CodeQL
     runs-on: ubuntu-latest
-    needs: build
+    needs: sca-dependency-check
     permissions:
       actions: read
       contents: read
